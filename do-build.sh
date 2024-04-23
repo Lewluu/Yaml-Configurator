@@ -10,7 +10,7 @@ log_error="[::: BUILD ERROR :::] "
 
 declare -A targets
 
-targets=
+targets=(
     ["VS17"]="Visual Studio 17 2022"
     ["VS16"]="Visual Studio 16 2019"
     ["VS15"]="Visual Studio 15 2017"
@@ -19,6 +19,7 @@ targets=
     ["NMake"]="NMake Makefiles"
     ["MSYS"]="MSYS Makefiles"
     ["Unix"]="Unix Makefiles"
+)
 
 while getopts t: flag
 do
@@ -44,13 +45,15 @@ else
     done
 fi
 
+# TO DO
+# if clean flag is on, remove build folder, or other sub-components
+rm -rf build/
 mkdir build
-echo -e $log_info"Changing path to build"
-cd build
 
 # calling cmake and make commands
-echo $info_msg'Calling command: cmake ../ -G ''"'${target}'"'
-cmake ../ -G''"${target}"'' | sed -e 's/^/'"${debug_msg}"'/;'
+echo $log_info'Calling command: cmake -S . -G ''"'${target}'"' -B build/
+cmake -S . -G ''"${target}"'' -B build/ | sed -e 's/^/'"${log_debug}"'/;'
 
-echo $info_msg'Calling command: make'
-'make' | sed -e 's/^/'"${debug_msg}"'/;'
+cd build/
+echo $log_info'Calling command: make'
+'mingw32-make' | sed -e 's/^/'"${log_debug}"'/;'

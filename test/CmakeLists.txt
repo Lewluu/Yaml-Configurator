@@ -1,1 +1,2 @@
-add_executable(${PROJECT_NAME} main.cpp)
+set(TEST_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test/src)
+add_executable(${PROJECT_NAME} ${TEST_DIRECTORY}/main.cpp)
